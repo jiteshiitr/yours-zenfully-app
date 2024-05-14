@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
 app.use(cors());
@@ -9,6 +10,7 @@ app.use(bodyParser.json());
 
 app.post('/chatbot', async (req, res) => {
   const userMessage = req.body.message;
+  const apiKey = process.env.OPENAI_API_KEY; // Load API key from environment variables
 
   try {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
@@ -16,7 +18,7 @@ app.post('/chatbot', async (req, res) => {
       messages: [{ role: 'user', content: userMessage }],
     }, {
       headers: {
-        'Authorization': `Bearer sk-proj-C4h5WktCpnIoF9rUSR2eT3BlbkFJNnllG6O89sqoY3D3tHeY`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       }
     });
